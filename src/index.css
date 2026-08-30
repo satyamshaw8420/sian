@@ -84,10 +84,14 @@ body {
   backface-visibility: hidden;
 }
 
-/* outlined ambient glyph */
+/* outlined ambient glyphs */
 .text-outline-cream {
   color: transparent;
   -webkit-text-stroke: 1.5px rgb(247 240 229 / 0.1);
+}
+.text-outline-gold {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(201 154 82 / 0.28);
 }
 
 /* dotted price leader, classic menu-card style */

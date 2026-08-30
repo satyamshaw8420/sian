@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
 import { MENU, POPULAR } from "../data/menu";
 import { useOrder } from "../context/OrderContext";
@@ -7,6 +8,45 @@ import { Reveal } from "./Reveal";
 import { SectionHeading } from "./ui";
 import { PriceLabel } from "./MenuRow";
 import { ArrowRight } from "lucide-react";
+
+/** Pointer-driven 3D tilt with a travelling gold glare. */
+function Tilt({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(my, [0, 1], [7, -7]), { stiffness: 170, damping: 18 });
+  const rotateY = useSpring(useTransform(mx, [0, 1], [-9, 9]), { stiffness: 170, damping: 18 });
+  const glareX = useTransform(mx, [0, 1], ["-55%", "55%"]);
+  const glareY = useTransform(my, [0, 1], ["-55%", "55%"]);
+  const glare = useTransform(
+    [glareX, glareY],
+    ([x, y]) =>
+      `radial-gradient(400px circle at calc(50% + ${x}) calc(50% + ${y}), rgba(242,196,61,0.14), transparent 55%)`
+  );
+
+  return (
+    <div className="perspective-1200 h-full">
+      <motion.div
+        ref={ref}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        onMouseMove={(e) => {
+          const r = ref.current?.getBoundingClientRect();
+          if (!r) return;
+          mx.set((e.clientX - r.left) / r.width);
+          my.set((e.clientY - r.top) / r.height);
+        }}
+        onMouseLeave={() => {
+          mx.set(0.5);
+          my.set(0.5);
+        }}
+        className={`relative h-full ${className}`}
+      >
+        {children}
+        <motion.span className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: glare }} aria-hidden />
+      </motion.div>
+    </div>
+  );
+}
 
 export default function FeaturedDishes() {
   const { add, setQty, setSelected, cart } = useOrder();
@@ -86,7 +126,8 @@ export default function FeaturedDishes() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
-                  <div className="relative overflow-hidden border border-cream/10 bg-coal transition-all duration-400 group-hover:-translate-y-1.5 group-hover:border-gold/40 group-hover:shadow-[var(--shadow-lift)]">
+                  <Tilt>
+                  <div className="relative overflow-hidden border border-cream/10 bg-coal transition-all duration-400 group-hover:border-gold/40 group-hover:shadow-[var(--shadow-lift)]">
                     <button
                       type="button"
                       onClick={() => setSelected(dish)}
@@ -158,6 +199,7 @@ export default function FeaturedDishes() {
                       </div>
                     )}
                   </div>
+                  </Tilt>
                 </article>
               );
             })}
