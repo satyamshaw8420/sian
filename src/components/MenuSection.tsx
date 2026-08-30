@@ -205,6 +205,7 @@ export default function MenuSection({
   /* page-flip direction */
   const pageKey = isFiltering ? "results" : activeCat;
   const prevKeyRef = useRef(pageKey);
+  const touchX = useRef<number | null>(null);
   const dir = useMemo(() => {
     const pi = CATEGORIES.indexOf(prevKeyRef.current);
     const ni = CATEGORIES.indexOf(pageKey);
@@ -333,6 +334,43 @@ export default function MenuSection({
           </div>
         </Reveal>
 
+        {/* Chapter progress bar — tap a segment to flip */}
+        <Reveal delay={0.12}>
+          <div className="mt-9 flex items-end gap-[5px]" role="group" aria-label="Menu chapter progress">
+            {CATEGORIES.map((cat, i) => {
+              const active = !isFiltering && i === activeIndex;
+              const passed = !isFiltering && i < activeIndex;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => goto(cat)}
+                  title={`${cat} (${counts.get(cat)} dishes)`}
+                  aria-label={`Chapter ${i + 1}: ${cat}`}
+                  aria-pressed={active}
+                  className={`min-w-0 flex-1 rounded-full transition-all duration-500 ${
+                    active
+                      ? "h-[9px] bg-gold shadow-[0_0_16px_rgba(201,154,82,0.8)]"
+                      : passed
+                        ? "h-1.5 bg-gold/55 hover:bg-gold/85"
+                        : "h-1.5 bg-cream/15 hover:bg-cream/35"
+                  }`}
+                />
+              );
+            })}
+          </div>
+          <p className="mt-3 text-center text-[10.5px] font-bold uppercase tracking-[0.22em] text-cream/40" aria-live="polite">
+            {isFiltering ? (
+              <>Search results · showing matches from every chapter</>
+            ) : (
+              <>
+                Chapter {String(activeIndex + 1).padStart(2, "0")} of {CATEGORIES.length} · {activeCat} ·{" "}
+                <span className="text-gold/70">tap a bar or swipe the page</span>
+              </>
+            )}
+          </p>
+        </Reveal>
+
         {/* ── The open book ── */}
         <Reveal delay={0.15} className="relative mt-10 [perspective:1600px]">
           {/* stacked page edges behind the spread */}
@@ -405,7 +443,19 @@ export default function MenuSection({
             </aside>
 
             {/* ═══ RIGHT PAGE · cream paper with the dishes ═══ */}
-            <div className="relative min-h-[480px] bg-parchment text-charcoal shadow-[inset_28px_0_34px_-28px_rgba(23,20,18,0.55)]">
+            <div
+              className="relative min-h-[480px] touch-pan-y bg-parchment text-charcoal shadow-[inset_28px_0_34px_-28px_rgba(23,20,18,0.55)]"
+              onTouchStart={(e) => {
+                touchX.current = e.touches[0].clientX;
+              }}
+              onTouchEnd={(e) => {
+                if (touchX.current === null) return;
+                const dx = e.changedTouches[0].clientX - touchX.current;
+                touchX.current = null;
+                if (Math.abs(dx) < 50 || isFiltering) return;
+                gotoIndex(activeIndex + (dx < 0 ? 1 : -1));
+              }}
+            >
               {/* paper corner flourishes */}
               <span className="pointer-events-none absolute left-3 top-3 h-5 w-5 border-l-2 border-t-2 border-gold/50" aria-hidden />
               <span className="pointer-events-none absolute right-3 top-3 h-5 w-5 border-r-2 border-t-2 border-gold/50" aria-hidden />

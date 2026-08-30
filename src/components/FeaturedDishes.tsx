@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
 import { MENU, POPULAR } from "../data/menu";
@@ -52,6 +52,24 @@ export default function FeaturedDishes() {
   const { add, setQty, setSelected, cart } = useOrder();
   const trackRef = useRef<HTMLDivElement>(null);
   const dishes = POPULAR.slice(0, 8);
+  const [progress, setProgress] = useState(0);
+
+  /* live drag/swipe progress of the strip */
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const update = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      setProgress(max > 0 ? Math.min(1, el.scrollLeft / max) : 1);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   const scrollByCard = (dir: 1 | -1) => {
     const el = trackRef.current;
@@ -62,13 +80,21 @@ export default function FeaturedDishes() {
 
   return (
     <section id="featured" className="noise relative scroll-mt-20 overflow-hidden bg-charcoal py-24 text-cream sm:py-32">
-      {/* ghost watermark */}
-      <span
-        className="pointer-events-none absolute -top-8 left-0 select-none whitespace-nowrap font-display text-[22vw] font-black leading-none text-outline-cream lg:text-[16rem]"
+      {/* vertical accent — 招牌菜 means “house signature dishes” */}
+      <div
+        className="pointer-events-none absolute right-7 top-1/2 z-0 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex"
         aria-hidden
       >
-        SIGNATURES
-      </span>
+        <span className="h-20 w-px bg-gradient-to-b from-transparent to-gold/60" />
+        <p className="font-display text-[2.6rem] font-black leading-[1.45] text-outline-gold [writing-mode:vertical-rl]">
+          招牌菜
+        </p>
+        <span className="h-1.5 w-1.5 rotate-45 bg-chilli" />
+        <p className="text-[9px] font-bold uppercase tracking-[0.45em] text-gold/55 [writing-mode:vertical-rl]">
+          House Favourites
+        </p>
+        <span className="h-20 w-px bg-gradient-to-b from-gold/60 to-transparent" />
+      </div>
 
       <div className="relative z-10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-6 px-5 sm:px-8">
@@ -220,6 +246,24 @@ export default function FeaturedDishes() {
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
               </button>
             </div>
+          </div>
+        </Reveal>
+
+        {/* drag / swipe progress bar */}
+        <Reveal delay={0.22}>
+          <div className="mx-auto mt-7 flex max-w-7xl items-center gap-4 px-5 sm:px-8">
+            <span className="whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.24em] text-cream/45">
+              Drag · Swipe
+            </span>
+            <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-cream/10" aria-hidden>
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-chilli via-gold to-gold-bright transition-[width] duration-200 ease-out"
+                style={{ width: `${Math.max(7, progress * 100)}%` }}
+              />
+            </div>
+            <span className="whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.24em] text-cream/45">
+              {String(dishes.length).padStart(2, "0")} / {MENU.length} dishes
+            </span>
           </div>
         </Reveal>
       </div>

@@ -8,7 +8,7 @@ import { fadeUp, stagger } from "./Reveal";
 
 export default function ContactCTA() {
   return (
-    <section className="noise relative overflow-hidden bg-charcoal py-28 text-cream sm:py-40" aria-label="Final call to action">
+    <section className="noise relative overflow-hidden bg-charcoal py-24 text-cream sm:py-32" aria-label="Final call to action">
       <div className="absolute inset-0" aria-hidden>
         <img
           src={IMAGES.hero}
@@ -57,11 +57,11 @@ export default function ContactCTA() {
           </span>
         </h2>
 
-        <motion.p variants={fadeUp} className="mx-auto mt-8 max-w-lg font-display text-xl italic text-cream/80 sm:text-2xl">
-          Your next favourite dish is waiting on Chowringhee Road.
+        <motion.p variants={fadeUp} className="mx-auto mt-6 max-w-xl font-display text-lg italic leading-relaxed text-cream/75 sm:text-2xl">
+          One street. Four fires. <span className="text-gold">Zero chance you leave hungry.</span>
         </motion.p>
 
-        <motion.div variants={fadeUp} className="mt-11 flex flex-wrap items-center justify-center gap-3.5">
+        <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center justify-center gap-3.5">
           <button
             type="button"
             onClick={() => scrollToId("menu")}
