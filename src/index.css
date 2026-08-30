@@ -94,6 +94,14 @@ body {
   -webkit-text-stroke: 1.5px rgb(201 154 82 / 0.28);
 }
 
+/* dotted price leader — dark variant for cream paper pages */
+.dot-leader-dark {
+  flex: 1 1 1.25rem;
+  min-width: 1.25rem;
+  border-bottom: 2px dotted rgb(23 20 18 / 0.22);
+  transform: translateY(-4px);
+}
+
 /* dotted price leader, classic menu-card style */
 .dot-leader {
   flex: 1 1 2rem;
