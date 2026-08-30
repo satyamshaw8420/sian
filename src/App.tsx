@@ -2,13 +2,14 @@ import { useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { OrderProvider } from "./context/OrderContext";
-import { DEFAULT_FILTERS, type MenuFilters } from "./data/menu";
+import { DEFAULT_FILTERS, IMAGES, type MenuFilters } from "./data/menu";
 import { scrollToId } from "./lib/scroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Ticker from "./components/Ticker";
 import QuickInfo from "./components/QuickInfo";
 import About from "./components/About";
+import ParallaxDivider from "./components/ParallaxDivider";
 import FeaturedDishes from "./components/FeaturedDishes";
 import CravingFilter from "./components/CravingFilter";
 import MenuSection from "./components/MenuSection";
@@ -40,9 +41,21 @@ function HomePage() {
         <Ticker />
         <QuickInfo />
         <About />
+        <ParallaxDivider
+          src={IMAGES.noodles}
+          alt="Wok-tossed hakka noodles with steam rising"
+          line="Fired over a roaring flame."
+          sub="Hakka, schezwan, chilli garlic, cantonese — every noodle wok-tossed to order."
+        />
         <FeaturedDishes />
         <CravingFilter filters={menuFilters} onChange={setMenuFilters} />
         <MenuSection filters={menuFilters} onChange={setMenuFilters} />
+        <ParallaxDivider
+          src={IMAGES.biryani}
+          alt="Saffron dum biryani in a copper handi with steam rising"
+          line="Sealed. Steamed. Served."
+          sub="Our dum biryanis are layered, sealed and steamed when you order — never before."
+        />
         <Gallery />
         <Reviews />
         <Location />

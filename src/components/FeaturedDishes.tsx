@@ -1,30 +1,64 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Plus } from "lucide-react";
-import { POPULAR } from "../data/menu";
+import { useRef } from "react";
+import { ChevronLeft, ChevronRight, Plus, Star } from "lucide-react";
+import { MENU, POPULAR } from "../data/menu";
 import { useOrder } from "../context/OrderContext";
-import { inr } from "../lib/format";
 import { scrollToId } from "../lib/scroll";
 import { Reveal } from "./Reveal";
-import { SectionHeading, VegMark } from "./ui";
+import { SectionHeading } from "./ui";
+import { PriceLabel } from "./MenuRow";
+import { ArrowRight } from "lucide-react";
 
 export default function FeaturedDishes() {
-  const { add, setSelected, cart } = useOrder();
+  const { add, setQty, setSelected, cart } = useOrder();
+  const trackRef = useRef<HTMLDivElement>(null);
   const dishes = POPULAR.slice(0, 8);
 
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollBy({ left: dir * 360, behavior: reduced ? "auto" : "smooth" });
+  };
+
   return (
-    <section id="featured" className="noise scroll-mt-20 bg-charcoal py-24 text-cream sm:py-32">
-      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-6">
+    <section id="featured" className="noise relative scroll-mt-20 overflow-hidden bg-charcoal py-24 text-cream sm:py-32">
+      {/* ghost watermark */}
+      <span
+        className="pointer-events-none absolute -top-8 left-0 select-none whitespace-nowrap font-display text-[22vw] font-black leading-none text-outline-cream lg:text-[16rem]"
+        aria-hidden
+      >
+        SIGNATURES
+      </span>
+
+      <div className="relative z-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-6 px-5 sm:px-8">
           <SectionHeading
             tone="light"
-            eyebrow="Signatures"
+            eyebrow="From the menu sheet"
             lines={["Worth Coming", <em key="e" className="text-gold">Hungry For</em>]}
+            sub="The dishes our menu marks as house favourites — flagged popular by the kitchen itself."
           />
-          <Reveal delay={0.2}>
+          <Reveal delay={0.2} className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Scroll featured dishes left"
+              className="hidden h-12 w-12 items-center justify-center border border-cream/20 text-cream transition-all duration-300 hover:border-gold hover:text-gold sm:flex"
+            >
+              <ChevronLeft className="h-5 w-5" aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Scroll featured dishes right"
+              className="hidden h-12 w-12 items-center justify-center border border-cream/20 text-cream transition-all duration-300 hover:border-gold hover:text-gold sm:flex"
+            >
+              <ChevronRight className="h-5 w-5" aria-hidden />
+            </button>
             <button
               type="button"
               onClick={() => scrollToId("menu")}
-              className="group inline-flex items-center gap-2 border-b border-gold/50 pb-1 text-[13px] font-bold uppercase tracking-[0.16em] text-gold transition-colors hover:text-gold-light"
+              className="group inline-flex items-center gap-2 border-b border-gold/50 pb-1 text-[12.5px] font-bold uppercase tracking-[0.16em] text-gold transition-colors hover:text-gold-light"
             >
               Full menu
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
@@ -32,76 +66,120 @@ export default function FeaturedDishes() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          {dishes.map((dish, i) => (
-            <Reveal key={dish.id} delay={(i % 4) * 0.08} as="article" className="group">
-              <motion.button
-                type="button"
-                onClick={() => setSelected(dish)}
-                className="relative block w-full overflow-hidden border border-cream/8 bg-coal text-left transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/30 hover:shadow-[var(--shadow-lift)]"
-                aria-label={`View ${dish.name} — ${inr(dish.price)}`}
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
-                    src={dish.image}
-                    alt={dish.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/25 to-transparent" aria-hidden />
+        {/* Horizontal strip */}
+        <Reveal delay={0.15}>
+          <div
+            ref={trackRef}
+            className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-4 sm:px-8 lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+          >
+            {dishes.map((dish, i) => {
+              const qty = cart[dish.id] ?? 0;
+              return (
+                <article
+                  key={dish.id}
+                  className="group relative w-[76vw] shrink-0 snap-start sm:w-[330px]"
+                >
+                  <span
+                    className="pointer-events-none absolute -top-7 left-2 z-10 font-display text-7xl font-black text-outline-gold sm:text-8xl"
+                    aria-hidden
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
 
-                  {/* index + veg mark */}
-                  <div className="absolute left-4 top-4 flex items-center gap-2.5">
-                    <span className="font-display text-lg italic text-gold/80">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <VegMark type={dish.type} size="sm" />
-                  </div>
-
-                  {/* meta */}
-                  <div className="absolute inset-x-0 bottom-0 p-5">
-                    <p className="text-[10.5px] font-bold uppercase tracking-[0.22em] text-gold">
-                      {dish.category}
-                    </p>
-                    <div className="mt-1.5 flex items-end justify-between gap-3">
-                      <h3 className="font-display text-[1.35rem] font-bold leading-tight text-cream">
-                        {dish.name}
-                      </h3>
-                      <p className="whitespace-nowrap font-display text-lg font-bold text-gold-light">
-                        {inr(dish.price)}
-                      </p>
-                    </div>
-
-                    <span
-                      role="button"
-                      tabIndex={-1}
-                      className={`mt-4 inline-flex items-center gap-1.5 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] transition-all duration-300 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 ${
-                        cart[dish.id]
-                          ? "bg-gold text-charcoal"
-                          : "bg-chilli text-cream group-hover:bg-chilli"
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        add(dish.id);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          add(dish.id);
-                        }
-                      }}
+                  <div className="relative overflow-hidden border border-cream/10 bg-coal transition-all duration-400 group-hover:-translate-y-1.5 group-hover:border-gold/40 group-hover:shadow-[var(--shadow-lift)]">
+                    <button
+                      type="button"
+                      onClick={() => setSelected(dish)}
+                      className="block w-full text-left"
+                      aria-label={`View ${dish.name}`}
                     >
-                      <Plus className="h-3.5 w-3.5" aria-hidden />
-                      {cart[dish.id] ? `Added × ${cart[dish.id]}` : "Add to order"}
-                    </span>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img
+                          src={dish.image}
+                          alt={dish.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08]"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" aria-hidden />
+                        <span className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 bg-charcoal/80 px-2.5 py-1 text-[9.5px] font-extrabold uppercase tracking-[0.16em] text-gold backdrop-blur">
+                          <Star className="h-3 w-3 fill-gold" aria-hidden /> Popular
+                        </span>
+                      </div>
+                      <div className="p-5">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-gold/80">
+                          {dish.category}
+                        </p>
+                        <h3 className="mt-1.5 font-display text-[1.35rem] font-bold leading-tight text-cream transition-colors group-hover:text-gold-light">
+                          {dish.name}
+                        </h3>
+                        <div className="mt-3 flex items-end justify-between gap-3 border-t border-cream/8 pt-3">
+                          <PriceLabel item={dish} />
+                          <span className="text-[10.5px] uppercase tracking-[0.14em] text-cream/40">
+                            Tap for details
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* add control */}
+                    {!dish.available ? (
+                      <span className="absolute bottom-5 right-5 text-[10px] font-bold uppercase tracking-[0.12em] text-cream/35">
+                        Unavailable
+                      </span>
+                    ) : qty === 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => add(dish.id)}
+                        aria-label={`Add ${dish.name} to selection`}
+                        className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-chilli text-cream shadow-lg transition-all duration-300 hover:scale-110 hover:bg-chilli-deep group-hover:bg-gold group-hover:text-charcoal"
+                      >
+                        <Plus className="h-5 w-5" aria-hidden />
+                      </button>
+                    ) : (
+                      <div className="absolute bottom-4 right-4 flex items-center overflow-hidden rounded-full border border-gold/60 bg-charcoal/90 backdrop-blur">
+                        <button
+                          type="button"
+                          onClick={() => setQty(dish.id, qty - 1)}
+                          aria-label={`Decrease ${dish.name} quantity`}
+                          className="flex h-10 w-8 items-center justify-center text-gold transition-colors hover:bg-gold hover:text-charcoal"
+                        >
+                          −
+                        </button>
+                        <span className="w-7 text-center text-sm font-extrabold tabular-nums text-gold-light">{qty}</span>
+                        <button
+                          type="button"
+                          onClick={() => setQty(dish.id, qty + 1)}
+                          aria-label={`Increase ${dish.name} quantity`}
+                          className="flex h-10 w-8 items-center justify-center text-gold transition-colors hover:bg-gold hover:text-charcoal"
+                        >
+                          <Plus className="h-4 w-4" aria-hidden />
+                        </button>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </motion.button>
-            </Reveal>
-          ))}
-        </div>
+                </article>
+              );
+            })}
+
+            {/* end card */}
+            <div className="flex w-[76vw] shrink-0 snap-start flex-col items-start justify-center border border-dashed border-gold/30 p-8 sm:w-[330px]">
+              <p className="font-display text-3xl font-bold italic text-gold">…and {MENU.length - dishes.length}+ more</p>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-cream/55">
+                Soups, momos, tandoor, biryani, Indian classics, breads and combos — the full sheet is
+                one scroll away.
+              </p>
+              <button
+                type="button"
+                onClick={() => scrollToId("menu")}
+                className="group mt-6 inline-flex items-center gap-2 border-b border-gold/60 pb-1 text-[12px] font-bold uppercase tracking-[0.16em] text-gold transition-colors hover:text-gold-light"
+              >
+                Browse the full menu
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+              </button>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

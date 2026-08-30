@@ -4,44 +4,61 @@ import { SITE } from "../data/site";
 import { IMAGES } from "../data/menu";
 import { scrollToId } from "../lib/scroll";
 import { openWhatsApp } from "../lib/whatsapp";
-import { fadeUp, stagger, LineReveal } from "./Reveal";
+import { fadeUp, stagger } from "./Reveal";
 
 export default function ContactCTA() {
   return (
-    <section className="relative overflow-hidden bg-charcoal py-28 text-cream sm:py-40" aria-label="Final call to action">
+    <section className="noise relative overflow-hidden bg-charcoal py-28 text-cream sm:py-40" aria-label="Final call to action">
       <div className="absolute inset-0" aria-hidden>
         <img
           src={IMAGES.hero}
           alt=""
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover object-center opacity-40"
+          className="h-full w-full object-cover object-center opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal/70 to-charcoal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal/60 to-charcoal" />
+        <div className="absolute left-1/2 top-1/2 h-[480px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-chilli/[0.08] blur-[120px]" />
       </div>
 
       <motion.div
-        className="relative z-10 mx-auto max-w-4xl px-5 text-center sm:px-8"
+        className="relative z-10 mx-auto max-w-5xl px-5 text-center sm:px-8"
         variants={stagger}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <motion.p variants={fadeUp} className="text-[11px] font-bold uppercase tracking-[0.32em] text-gold">
+        <motion.p variants={fadeUp} className="flourish-divider mx-auto max-w-md text-[11px] font-bold uppercase tracking-[0.32em] text-gold">
           {SITE.hours.label} · {SITE.hours.display}
         </motion.p>
 
-        <h2 className="mt-6 font-display text-6xl font-black leading-[0.95] sm:text-8xl">
-          <LineReveal
-            lines={[
-              "Come",
-              <em key="h" className="text-gold">Hungry.</em>,
-            ]}
-          />
+        <h2 className="mt-8 font-display leading-[0.88]">
+          <span className="block overflow-hidden">
+            <motion.span
+              className="block text-7xl font-black text-outline-cream sm:text-9xl lg:text-[11rem]"
+              initial={{ y: "110%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Come
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden">
+            <motion.em
+              className="block pl-[0.6em] text-7xl font-bold italic text-gold sm:pl-[0.8em] sm:text-9xl lg:text-[11rem]"
+              initial={{ y: "110%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Hungry.
+            </motion.em>
+          </span>
         </h2>
 
-        <motion.p variants={fadeUp} className="mx-auto mt-7 max-w-lg font-display text-xl italic text-cream/80 sm:text-2xl">
-          Your next favourite dish is waiting.
+        <motion.p variants={fadeUp} className="mx-auto mt-8 max-w-lg font-display text-xl italic text-cream/80 sm:text-2xl">
+          Your next favourite dish is waiting on Chowringhee Road.
         </motion.p>
 
         <motion.div variants={fadeUp} className="mt-11 flex flex-wrap items-center justify-center gap-3.5">

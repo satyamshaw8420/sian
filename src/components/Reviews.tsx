@@ -1,110 +1,113 @@
-import { ArrowUpRight, Star } from "lucide-react";
-import { SITE, LINKS } from "../data/site";
-import { POPULAR } from "../data/menu";
-import { inr } from "../lib/format";
-import { scrollToId } from "../lib/scroll";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Quote } from "lucide-react";
+import { SITE } from "../data/site";
 import { Reveal } from "./Reveal";
-import { SectionHeading, VegMark } from "./ui";
 
 function Stars({ value }: { value: number }) {
-  const pct = (value / 5) * 100;
   return (
-    <div className="relative inline-flex" role="img" aria-label={`Rated ${value} out of 5 stars`}>
-      <div className="flex gap-1 text-charcoal/20">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="h-6 w-6 fill-current" aria-hidden />
-        ))}
-      </div>
-      <div className="absolute inset-0 overflow-hidden" style={{ width: `${pct}%` }}>
-        <div className="flex gap-1 text-gold">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-6 w-6 shrink-0 fill-current" aria-hidden />
-          ))}
-        </div>
-      </div>
-    </div>
+    <span className="flex items-center gap-1.5" role="img" aria-label={`${value} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map((i) => {
+        const fill = Math.max(0, Math.min(1, value - (i - 1)));
+        return (
+          <span key={i} className="relative inline-block h-7 w-7">
+            <StarShape className="absolute inset-0 text-cream/15" />
+            <span className="absolute inset-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
+              <StarShape className="h-7 w-7 text-gold" filled />
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+function StarShape({ className, filled = false }: { className: string; filled?: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <path
+        d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.45 6.2 20.5l1.1-6.47L2.6 9.45l6.5-.95L12 2.6z"
+        fill={filled ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth={filled ? 0 : 1.4}
+      />
+    </svg>
   );
 }
 
 export default function Reviews() {
-  const loved = POPULAR.slice(0, 5);
-
   return (
-    <section id="reviews" className="scroll-mt-20 bg-cream py-24 text-charcoal sm:py-32">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
-        {/* Rating block */}
-        <div>
-          <SectionHeading eyebrow="Google Reviews" lines={["What Our", <em key="g" className="text-chilli">Guests Say</em>]} />
-          <Reveal delay={0.15} className="mt-10 flex items-end gap-6">
-            <p className="font-display text-[7rem] font-black leading-[0.8] sm:text-[9rem]">
+    <section id="reviews" className="noise relative scroll-mt-20 overflow-hidden bg-charcoal py-24 text-cream sm:py-32">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -left-24 top-10 rounded-full bg-burgundy/45 blur-[120px]" style={{ width: 380, height: 380 }} />
+        <Quote className="absolute -right-10 top-10 h-72 w-72 text-cream/[0.03]" aria-hidden />
+      </div>
+
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2">
+        {/* Big rating */}
+        <Reveal>
+          <p className="flourish-divider max-w-xs text-[11px] font-bold uppercase tracking-[0.3em] text-gold">
+            <span className="px-3">Word on the street</span>
+          </p>
+          <h2 className="mt-5 font-display text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">
+            What Our
+            <span className="block">
+              Guests <em className="text-gold">Say</em>
+            </span>
+          </h2>
+
+          <div className="mt-9 flex items-end gap-6">
+            <motion.p
+              className="font-display text-[6.5rem] font-black leading-none text-gold sm:text-[8rem]"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
               {SITE.rating}
-            </p>
-            <div className="pb-3">
+            </motion.p>
+            <div className="pb-4">
               <Stars value={SITE.rating} />
-              <p className="mt-2.5 text-sm font-semibold text-taupe">
-                Based on <span className="font-bold text-charcoal">{SITE.reviewCount}+ Google reviews</span>
+              <p className="mt-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-cream/55">
+                {SITE.reviewCount}+ Google reviews
               </p>
             </div>
-          </Reveal>
-          <Reveal delay={0.22}>
-            <p className="mt-7 max-w-md text-[15px] leading-[1.8] text-taupe">
-              Every review we show lives on our public Google profile — written by real guests,
-              unedited and unfiltered. Read them all before you visit.
-            </p>
-            <a
-              href={LINKS.mapsSearch}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group mt-6 inline-flex items-center gap-2 bg-charcoal px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink"
-            >
-              Read reviews on Google
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-            </a>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
 
-        {/* Most ordered — honest social proof from the live menu */}
-        <Reveal delay={0.1} className="relative">
-          <div className="absolute -right-3 -top-3 h-full w-full border border-gold/60" aria-hidden />
-          <div className="relative border border-charcoal/10 bg-card p-7 shadow-[var(--shadow-card)] sm:p-9">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="font-display text-2xl font-bold">What people come for</h3>
-              <span className="bg-gold/15 px-3 py-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.16em] text-gold">
-                Most loved
-              </span>
+        {/* Honest note + CTA */}
+        <Reveal delay={0.15}>
+          <div className="border border-gold/20 bg-coal/70 p-8 backdrop-blur-sm sm:p-10">
+            <p className="font-display text-2xl font-bold leading-snug text-cream sm:text-[1.7rem]">
+              Real plates, real opinions — <em className="text-gold">every review lives on Google.</em>
+            </p>
+            <p className="mt-4 text-[14.5px] leading-[1.85] text-cream/60">
+              We don't reprint cherry-picked quotes here. Open our Google profile to read all{" "}
+              {SITE.reviewCount}+ reviews exactly as guests wrote them — the praise, the suggestions,
+              everything. If you've eaten with us on Chowringhee, your review helps the next hungry
+              Kolkata food-lover find us.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3.5">
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 bg-gold px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-wine-deep transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-light hover:shadow-[var(--shadow-gold)]"
+              >
+                Read reviews on Google
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+              </a>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapsQuery)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-cream/25 px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:text-gold"
+              >
+                Rate your visit
+              </a>
             </div>
-            <ul className="mt-6 divide-y divide-charcoal/8">
-              {loved.map((dish, i) => (
-                <li key={dish.id}>
-                  <button
-                    type="button"
-                    onClick={() => scrollToId("menu")}
-                    className="group flex w-full items-center gap-4 py-3.5 text-left"
-                    aria-label={`See ${dish.name} on the menu`}
-                  >
-                    <span className="font-display text-sm italic text-gold">0{i + 1}</span>
-                    <img
-                      src={dish.image}
-                      alt=""
-                      className="h-11 w-11 shrink-0 rounded-sm object-cover"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-2">
-                        <VegMark type={dish.type} size="sm" />
-                        <span className="truncate font-display text-[15.5px] font-bold transition-colors group-hover:text-chilli">
-                          {dish.name}
-                        </span>
-                      </span>
-                    </span>
-                    <span className="font-display text-[15px] font-bold text-taupe">{inr(dish.price)}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 border-t border-charcoal/10 pt-4 text-[11.5px] text-taupe">
-              Pulled live from the dishes our menu marks as house favourites.
+            <p className="mt-6 border-t border-cream/10 pt-5 text-[12px] leading-relaxed text-cream/40">
+              Rating shown is the public Google rating for {SITE.name}, {SITE.address.line1},{" "}
+              {SITE.address.line2}.
             </p>
           </div>
         </Reveal>

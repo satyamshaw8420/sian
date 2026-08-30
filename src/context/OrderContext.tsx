@@ -19,6 +19,7 @@ interface OrderState {
   lines: CartLine[];
   count: number;
   total: number;
+  hasUnpriced: boolean;
   add: (id: string, qty?: number) => void;
   setQty: (id: string, qty: number) => void;
   remove: (id: string) => void;
@@ -94,7 +95,11 @@ export function OrderProvider({ children }: { children: ReactNode }) {
   );
 
   const count = useMemo(() => lines.reduce((s, l) => s + l.qty, 0), [lines]);
-  const total = useMemo(() => lines.reduce((s, l) => s + l.item.price * l.qty, 0), [lines]);
+  const total = useMemo(
+    () => lines.reduce((s, l) => s + (l.item.price ?? 0) * l.qty, 0),
+    [lines]
+  );
+  const hasUnpriced = useMemo(() => lines.some((l) => l.item.price === null), [lines]);
 
   const value = useMemo(
     () => ({
@@ -102,6 +107,7 @@ export function OrderProvider({ children }: { children: ReactNode }) {
       lines,
       count,
       total,
+      hasUnpriced,
       add,
       setQty,
       remove,

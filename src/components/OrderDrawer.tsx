@@ -8,7 +8,7 @@ import { scrollToId } from "../lib/scroll";
 import { QtyStepper } from "./ui";
 
 export default function OrderDrawer() {
-  const { drawerOpen, setDrawerOpen, lines, count, total, setQty, remove, clear } = useOrder();
+  const { drawerOpen, setDrawerOpen, lines, count, total, hasUnpriced, setQty, remove, clear } = useOrder();
 
   useEffect(() => {
     if (drawerOpen) {
@@ -130,7 +130,13 @@ export default function OrderDrawer() {
                           <div className="mt-2 flex items-center justify-between gap-2">
                             <QtyStepper compact qty={qty} onChange={(q) => setQty(item.id, q)} />
                             <p className="font-display text-[15px] font-bold text-chilli">
-                              {inr(item.price * qty)}
+                              {item.price === null ? (
+                                <span className="text-[10.5px] font-bold uppercase tracking-[0.08em] text-taupe">
+                                  Price at restaurant
+                                </span>
+                              ) : (
+                                inr(item.price * qty)
+                              )}
                             </p>
                           </div>
                         </div>
@@ -146,10 +152,15 @@ export default function OrderDrawer() {
               <div className="border-t border-charcoal/10 bg-parchment px-6 py-5">
                 <div className="flex items-center justify-between">
                   <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-taupe">
-                    Estimated total
+                    Estimated total{hasUnpriced ? "*" : ""}
                   </p>
                   <p className="font-display text-3xl font-bold text-charcoal">{inr(total)}</p>
                 </div>
+                {hasUnpriced && (
+                  <p className="mt-1 text-[11px] font-semibold text-chilli">
+                    *Some selected items don't have prices listed — the restaurant will confirm them.
+                  </p>
+                )}
                 <button
                   type="button"
                   onClick={continueOnWhatsApp}
