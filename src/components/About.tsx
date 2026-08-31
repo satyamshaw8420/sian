@@ -19,8 +19,8 @@ export default function About() {
         {/* Sticky image stack */}
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
-            <Reveal className="relative">
-              <div className="absolute -left-4 -top-4 h-full w-full border border-gold/60" aria-hidden />
+            <Reveal className="relative mx-auto max-w-sm sm:max-w-none">
+              <div className="absolute -left-2.5 -top-2.5 sm:-left-4 sm:-top-4 h-full w-full border border-gold/60" aria-hidden />
               <div className="relative overflow-hidden">
                 <img
                   src={IMAGES.interior}
@@ -31,7 +31,7 @@ export default function About() {
                 />
               </div>
 
-              <div className="absolute -bottom-8 -right-2 w-[46%] rotate-[3deg] border-[6px] border-card shadow-[var(--shadow-lift)] transition-transform duration-500 hover:rotate-0 sm:-right-8">
+              <div className="absolute -bottom-6 -right-1 sm:-bottom-8 sm:-right-8 w-[46%] rotate-[3deg] border-4 sm:border-[6px] border-card shadow-[var(--shadow-lift)] transition-transform duration-500 hover:rotate-0">
                 <img
                   src={IMAGES.drums}
                   alt="Crispy glazed Drums of Heaven"
@@ -41,7 +41,7 @@ export default function About() {
                 />
               </div>
 
-              <span className="absolute -top-5 right-6 bg-chilli px-3.5 py-2 text-[10.5px] font-extrabold uppercase tracking-[0.2em] text-cream shadow-lg">
+              <span className="absolute -top-4 right-4 sm:-top-5 sm:right-6 bg-chilli px-3 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.2em] text-cream shadow-lg">
                 59B · Chowringhee
               </span>
             </Reveal>

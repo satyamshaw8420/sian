@@ -77,11 +77,11 @@ export default function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="mt-7 font-display font-black leading-[0.85] tracking-tight text-cream"
+            className="mt-6 font-display font-black leading-[0.88] tracking-tight text-cream sm:mt-7"
           >
             <span className="block overflow-hidden">
               <motion.span
-                className="block text-[21vw] sm:text-[19vw] lg:text-[10.5rem] xl:text-[12rem]"
+                className="block text-6xl sm:text-8xl md:text-9xl lg:text-[10.5rem] xl:text-[12rem]"
                 initial={{ y: "112%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.95, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
@@ -91,7 +91,7 @@ export default function Hero() {
             </span>
             <span className="block overflow-hidden">
               <motion.span
-                className="block pl-[0.55em] font-medium italic text-gold text-[17vw] sm:text-[15.5vw] sm:pl-[0.7em] lg:text-[8.5rem] lg:pl-[0.8em] xl:text-[9.5rem]"
+                className="block pl-[0.3em] font-medium italic text-gold text-5xl sm:text-7xl md:text-8xl sm:pl-[0.5em] lg:text-[8.5rem] lg:pl-[0.8em] xl:text-[9.5rem]"
                 initial={{ y: "112%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.95, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
@@ -101,37 +101,39 @@ export default function Hero() {
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} className="mt-7 flex items-center gap-4">
-            <span className="h-px w-14 shrink-0 bg-gold/70" aria-hidden />
-            <span className="font-display text-xl italic text-gold-light sm:text-2xl">“{SITE.tagline}”</span>
+          <motion.p variants={fadeUp} className="mt-5 flex items-center gap-3 sm:mt-7 sm:gap-4">
+            <span className="h-px w-10 shrink-0 bg-gold/70 sm:w-14" aria-hidden />
+            <span className="font-display text-lg italic text-gold-light sm:text-2xl">“{SITE.tagline}”</span>
           </motion.p>
 
-          <motion.p variants={fadeUp} className="mt-4 max-w-md text-[15px] leading-relaxed text-cream/65">
+          <motion.p variants={fadeUp} className="mt-3 max-w-md text-[14px] leading-relaxed text-cream/70 sm:mt-4 sm:text-[15px]">
             {SITE.intro}
           </motion.p>
 
-          <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-3.5">
-            <button
-              type="button"
-              onClick={() => scrollToId("menu")}
-              className="group inline-flex items-center gap-2 bg-chilli px-7 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-chilli-deep hover:shadow-[0_18px_40px_-12px_rgba(183,53,40,0.6)]"
-            >
-              Explore Menu
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-            </button>
-            <a
-              href={SITE.delivery.swiggyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-cream/25 px-7 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:text-gold"
-            >
-              Order Online <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-            </a>
+          <motion.div variants={fadeUp} className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3.5">
+            <div className="grid grid-cols-2 gap-2.5 sm:flex sm:gap-3.5">
+              <button
+                type="button"
+                onClick={() => scrollToId("menu")}
+                className="group inline-flex items-center justify-center gap-1.5 bg-chilli px-4 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-chilli-deep hover:shadow-[0_18px_40px_-12px_rgba(183,53,40,0.6)] sm:px-7 sm:py-4 sm:text-[12px] sm:tracking-[0.18em]"
+              >
+                Explore Menu
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-4 sm:w-4" aria-hidden />
+              </button>
+              <a
+                href={SITE.delivery.swiggyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 border border-cream/25 px-4 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-cream transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:text-gold sm:px-7 sm:py-4 sm:text-[12px] sm:tracking-[0.18em]"
+              >
+                Order Online <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden />
+              </a>
+            </div>
             <a
               href={LINKS.directions}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-2 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-cream/65 transition-colors hover:text-gold"
+              className="group inline-flex items-center justify-center gap-2 py-2 text-[11.5px] font-bold uppercase tracking-[0.16em] text-cream/70 transition-colors hover:text-gold sm:justify-start sm:px-2 sm:py-4 sm:text-[12px] sm:tracking-[0.18em]"
             >
               <MapPin className="h-4 w-4 text-gold" aria-hidden />
               <span className="border-b border-gold/40 pb-0.5 transition-colors group-hover:border-gold">
@@ -142,51 +144,53 @@ export default function Hero() {
 
           <motion.div
             variants={fadeUp}
-            className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-cream/10 pt-6"
+            className="mt-8 grid grid-cols-3 items-center divide-x divide-cream/15 border-y border-cream/10 py-3 text-center sm:mt-12 sm:flex sm:flex-wrap sm:divide-x-0 sm:border-y-0 sm:border-t sm:py-0 sm:pt-6 sm:text-left sm:gap-x-8 sm:gap-y-4"
           >
-            <span className="flex items-center gap-2.5">
-              <Star className="h-5 w-5 fill-gold text-gold" aria-hidden />
-              <span className="font-display text-2xl font-bold text-cream">{SITE.rating}</span>
-              <span className="text-[12px] leading-tight text-cream/50">
-                {SITE.reviewCount}+ Google<br />reviews
+            <div className="flex flex-col items-center px-1 sm:flex-row sm:items-center sm:gap-2.5 sm:px-0">
+              <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 fill-gold text-gold sm:h-5 sm:w-5" aria-hidden />
+                <span className="font-display text-xl font-bold text-cream sm:text-2xl">{SITE.rating}</span>
+              </div>
+              <span className="text-[10.5px] leading-tight text-cream/50 sm:text-[12px]">
+                {SITE.reviewCount}+ Google<br className="hidden sm:inline" /> reviews
               </span>
-            </span>
+            </div>
             <span className="hidden h-9 w-px bg-cream/12 sm:block" aria-hidden />
-            <span className="text-[12px] leading-tight text-cream/50">
-              <span className="font-display text-2xl font-bold text-cream">₹{SITE.priceForTwo}</span>
-              <br />approx. for two
-            </span>
+            <div className="flex flex-col items-center px-1 sm:block sm:px-0">
+              <span className="font-display text-xl font-bold text-cream sm:text-2xl">₹{SITE.priceForTwo}</span>
+              <p className="text-[10.5px] leading-tight text-cream/50 sm:text-[12px]">approx. for two</p>
+            </div>
             <span className="hidden h-9 w-px bg-cream/12 sm:block" aria-hidden />
-            <span className="text-[12px] leading-tight text-cream/50">
-              <span className="font-display text-2xl font-bold text-cream">04</span>
-              <br />cuisines, one kitchen
-            </span>
+            <div className="flex flex-col items-center px-1 sm:block sm:px-0">
+              <span className="font-display text-xl font-bold text-cream sm:text-2xl">04</span>
+              <p className="text-[10.5px] leading-tight text-cream/50 sm:text-[12px]">cuisines, 1 kitchen</p>
+            </div>
           </motion.div>
         </motion.div>
 
         {/* Image */}
         <motion.div
-          className="relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none"
+          className="relative mx-auto mt-4 w-full max-w-[320px] px-2 sm:mt-0 sm:max-w-md sm:px-0 lg:col-span-5 lg:max-w-none"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.div style={{ y: driftImg }} className="relative">
-            <div className="absolute -left-4 -top-4 h-full w-full border border-gold/40" aria-hidden />
-            <div className="relative overflow-hidden">
+          <motion.div style={{ y: driftImg }} className="relative mx-auto">
+            <div className="absolute -left-2.5 -top-2.5 sm:-left-4 sm:-top-4 h-full w-full border border-gold/40" aria-hidden />
+            <div className="relative overflow-hidden border border-gold/20 shadow-2xl">
               <img
                 src={IMAGES.drums}
                 alt="Drums of Heaven — crispy glazed chicken drumettes at Sian Kitchen"
                 className="kenburns aspect-[4/5] w-full object-cover"
                 decoding="async"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/55 via-transparent to-transparent" aria-hidden />
-              <p className="absolute bottom-4 left-4 text-[10.5px] font-bold uppercase tracking-[0.24em] text-cream/85">
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent" aria-hidden />
+              <p className="absolute bottom-3.5 left-3.5 text-[10px] font-bold uppercase tracking-[0.22em] text-cream/90 sm:bottom-4 sm:left-4 sm:text-[10.5px]">
                 Drums of Heaven · house favourite
               </p>
             </div>
 
-            <div className="absolute -bottom-9 -left-7 sm:-left-12">
+            <div className="absolute -bottom-6 -left-4 scale-75 origin-bottom-left sm:scale-100 sm:-bottom-9 sm:-left-7">
               <RotatingStamp />
             </div>
           </motion.div>
