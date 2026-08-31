@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { ExternalLink, ShoppingBag, X } from "lucide-react";
 import { SITE } from "../data/site";
@@ -138,85 +139,89 @@ export default function Navbar() {
       </header>
 
       {/* Mobile drawer */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="noise fixed inset-0 z-[100] flex flex-col bg-wine-deep text-cream"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-          >
-            <div className="relative z-10 flex items-center justify-between px-5 py-5">
-              <div className="flex items-center gap-3">
-                <img src={LOGO} alt="" className="h-11 w-11 rounded-full object-cover shadow-[0_0_0_1.5px_rgba(201,154,82,0.55)]" />
-                <span className="font-display text-lg font-black tracking-[0.08em]">SIAN</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="flex h-11 w-11 items-center justify-center border border-cream/20 transition-colors hover:border-gold hover:text-gold"
-                aria-label="Close navigation menu"
-              >
-                <X className="h-5 w-5" aria-hidden />
-              </button>
-            </div>
-
-            <nav className="relative z-10 mt-6 flex flex-1 flex-col gap-1 px-8" aria-label="Mobile">
-              {LINKS.map((link, i) => (
-                <motion.button
-                  key={link.id}
-                  type="button"
-                  onClick={() => go(link.id)}
-                  className="group flex items-baseline gap-4 border-b border-cream/8 py-4 text-left"
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.06 * i + 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <span className="font-display text-sm italic text-gold/70">0{i + 1}</span>
-                  <span className="font-display text-3xl font-bold text-cream transition-colors group-hover:text-gold sm:text-4xl">
-                    {link.label}
-                  </span>
-                </motion.button>
-              ))}
-
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
               <motion.div
-                className="mt-8 flex flex-col gap-3"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55, duration: 0.4 }}
+                className="noise fixed inset-0 z-[9999] flex flex-col overflow-y-auto bg-wine-deep text-cream"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Navigation menu"
               >
-                <a
-                  href={SITE.delivery.swiggyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-chilli px-6 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-cream"
-                >
-                  Order Online <ExternalLink className="h-4 w-4" aria-hidden />
-                </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    window.setTimeout(() => setDrawerOpen(true), 200);
-                  }}
-                  className="flex items-center justify-center gap-2 border border-gold/50 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-gold"
-                >
-                  <ShoppingBag className="h-4 w-4" aria-hidden />
-                  Your Selection {count > 0 && `(${count})`}
-                </button>
-              </motion.div>
-            </nav>
+                <div className="relative z-10 flex items-center justify-between px-5 py-5">
+                  <div className="flex items-center gap-3">
+                    <img src={LOGO} alt="" className="h-11 w-11 rounded-full object-cover shadow-[0_0_0_1.5px_rgba(201,154,82,0.55)]" />
+                    <span className="font-display text-lg font-black tracking-[0.08em]">SIAN</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="flex h-11 w-11 items-center justify-center border border-cream/20 transition-colors hover:border-gold hover:text-gold"
+                    aria-label="Close navigation menu"
+                  >
+                    <X className="h-5 w-5" aria-hidden />
+                  </button>
+                </div>
 
-            <p className="relative z-10 px-8 pb-8 text-[11px] uppercase tracking-[0.2em] text-cream/40">
-              {SITE.hours.label} · {SITE.hours.display}
-            </p>
-          </motion.div>
+                <nav className="relative z-10 mt-6 flex flex-1 flex-col gap-1 px-8" aria-label="Mobile">
+                  {LINKS.map((link, i) => (
+                    <motion.button
+                      key={link.id}
+                      type="button"
+                      onClick={() => go(link.id)}
+                      className="group flex items-baseline gap-4 border-b border-cream/8 py-4 text-left"
+                      initial={{ opacity: 0, x: -24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.06 * i + 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <span className="font-display text-sm italic text-gold/70">0{i + 1}</span>
+                      <span className="font-display text-3xl font-bold text-cream transition-colors group-hover:text-gold sm:text-4xl">
+                        {link.label}
+                      </span>
+                    </motion.button>
+                  ))}
+
+                  <motion.div
+                    className="mt-8 flex flex-col gap-3 pb-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55, duration: 0.4 }}
+                  >
+                    <a
+                      href={SITE.delivery.swiggyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 bg-chilli px-6 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-cream"
+                    >
+                      Order Online <ExternalLink className="h-4 w-4" aria-hidden />
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOpen(false);
+                        window.setTimeout(() => setDrawerOpen(true), 200);
+                      }}
+                      className="flex items-center justify-center gap-2 border border-gold/50 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-gold"
+                    >
+                      <ShoppingBag className="h-4 w-4" aria-hidden />
+                      Your Selection {count > 0 && `(${count})`}
+                    </button>
+                  </motion.div>
+                </nav>
+
+                <p className="relative z-10 px-8 pb-8 text-[11px] uppercase tracking-[0.2em] text-cream/40">
+                  {SITE.hours.label} · {SITE.hours.display}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 }

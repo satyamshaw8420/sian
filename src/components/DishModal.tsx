@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, MessageCircle, ShoppingBag, Users, X } from "lucide-react";
 import { useOrder } from "../context/OrderContext";
@@ -43,132 +44,133 @@ export default function DishModal() {
     window.setTimeout(() => setAdded(false), 1600);
   };
 
-  return (
-    <AnimatePresence>
-      {selected && (
-        <motion.div
-          className="fixed inset-0 z-[90] flex items-end justify-center bg-charcoal/80 backdrop-blur-sm sm:items-center sm:p-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="dish-modal-title"
-        >
-          <motion.div
-            className="relative flex max-h-[92svh] w-full max-w-3xl flex-col overflow-hidden bg-card text-charcoal sm:flex-row sm:rounded-sm"
-            initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 60, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              ref={closeRef}
-              type="button"
+  return typeof document !== "undefined"
+    ? createPortal(
+        <AnimatePresence>
+          {selected && (
+            <motion.div
+              className="fixed inset-0 z-[9999] flex items-end justify-center bg-charcoal/80 backdrop-blur-sm sm:items-center sm:p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
               onClick={close}
-              aria-label="Close dish details"
-              className="absolute right-3.5 top-3.5 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-charcoal/70 text-cream backdrop-blur transition-colors hover:bg-chilli"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="dish-modal-title"
             >
-              <X className="h-[18px] w-[18px]" aria-hidden />
-            </button>
-
-            <div className="relative h-52 shrink-0 sm:h-auto sm:w-[46%]">
-              <img src={selected.image} alt={selected.name} className="h-full w-full object-cover" decoding="async" />
-              <div className="absolute left-3.5 top-3.5 flex items-center gap-2">
-                <VegMark type={selected.type} />
-                <span className="bg-charcoal/75 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-gold backdrop-blur">
-                  {selected.group}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-6 sm:p-8">
-              <h3 id="dish-modal-title" className="font-display text-3xl font-bold leading-tight">
-                {selected.name}
-              </h3>
-
-              <p className="mt-2 text-[11.5px] font-bold uppercase tracking-[0.16em] text-taupe">
-                {selected.category}
-                {selected.serves && (
-                  <span className="ml-2 inline-flex items-center gap-1.5 normal-case tracking-normal text-chilli">
-                    <Users className="h-3.5 w-3.5" aria-hidden /> {selected.serves}
-                  </span>
-                )}
-              </p>
-
-              {selected.description && (
-                <p className="mt-4 text-[14.5px] leading-[1.8] text-ink/80">{selected.description}</p>
-              )}
-
-              <p
-                className={`mt-4 inline-flex w-fit items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] ${
-                  selected.available ? "text-[#1a7f37]" : "text-chilli"
-                }`}
+              <motion.div
+                className="relative max-h-[90svh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-charcoal/10 bg-cream text-charcoal shadow-2xl sm:rounded-none"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <span className={`h-2 w-2 rounded-full ${selected.available ? "bg-[#1a7f37]" : "bg-chilli"}`} aria-hidden />
-                {selected.available ? "Available today" : "Unavailable today"}
-              </p>
-
-              <div className="mt-6 flex items-end justify-between border-t border-charcoal/10 pt-5">
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-taupe">Price</p>
-                  {selected.price !== null ? (
-                    <p className="font-display text-3xl font-bold text-chilli">
-                      {inr(selected.price)}
-                      {selected.halfPrice !== undefined && (
-                        <span className="ml-2 text-base font-bold text-taupe">Half {inr(selected.halfPrice)}</span>
-                      )}
-                    </p>
-                  ) : (
-                    <p className="font-display text-xl font-bold text-taupe">Confirmed at restaurant</p>
-                  )}
+                {/* Hero image */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-charcoal">
+                  <img
+                    src={selected.image}
+                    alt={selected.name}
+                    className="h-full w-full object-cover"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
+                  <button
+                    ref={closeRef}
+                    type="button"
+                    onClick={close}
+                    aria-label="Close details"
+                    className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-charcoal/70 text-cream backdrop-blur transition-colors hover:bg-chilli"
+                  >
+                    <X className="h-5 w-5" aria-hidden />
+                  </button>
+                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                    <span className="bg-gold px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-charcoal">
+                      {selected.category}
+                    </span>
+                    <span className="font-display text-2xl font-black text-cream">
+                      {selected.price !== null ? inr(selected.price) : "Price at table"}
+                    </span>
+                  </div>
                 </div>
-                {selected.available && <QtyStepper qty={qty} onChange={(q) => setQty(Math.max(1, q))} />}
-              </div>
 
-              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-                <button
-                  type="button"
-                  disabled={!selected.available}
-                  onClick={handleAdd}
-                  className={`inline-flex flex-1 items-center justify-center gap-2 px-5 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-cream transition-all duration-300 disabled:cursor-not-allowed disabled:bg-charcoal/30 ${
-                    added ? "bg-[#1a7f37]" : "bg-chilli hover:-translate-y-0.5 hover:bg-chilli-deep"
-                  }`}
-                >
-                  {added ? (
-                    <>
-                      <Check className="h-4 w-4" aria-hidden /> Added to selection
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="h-4 w-4" aria-hidden />
-                      {cart[selected.id]
-                        ? `Add ${qty} more (in selection: ${cart[selected.id]})`
-                        : "Add to selection"}
-                    </>
+                {/* Body */}
+                <div className="p-6 sm:p-7">
+                  <div className="flex items-center gap-2.5">
+                    <VegMark type={selected.type} size="md" />
+                    <h3 id="dish-modal-title" className="font-display text-2xl font-bold">
+                      {selected.name}
+                    </h3>
+                  </div>
+
+                  {selected.description && (
+                    <p className="mt-3 text-[14px] leading-relaxed text-taupe">{selected.description}</p>
                   )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openWhatsAppForDish(selected, qty)}
-                  className="inline-flex flex-1 items-center justify-center gap-2 border-2 border-wa px-5 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-wa transition-all duration-300 hover:-translate-y-0.5 hover:bg-wa hover:text-cream"
-                >
-                  <MessageCircle className="h-4 w-4" aria-hidden />
-                  Add to WhatsApp
-                </button>
-              </div>
 
-              <p className="mt-4 text-[11.5px] leading-relaxed text-taupe">
-                “Add to WhatsApp” opens a pre-filled enquiry to the restaurant — availability and
-                payment are confirmed by them directly.
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+                  {selected.serves && (
+                    <p className="mt-4 flex items-center gap-2 text-[12.5px] font-semibold text-taupe">
+                      <Users className="h-4 w-4 text-chilli" aria-hidden /> Portion: {selected.serves}
+                    </p>
+                  )}
+
+                  {selected.halfPrice !== undefined && selected.price !== null && (
+                    <div className="mt-5 rounded border border-charcoal/10 bg-card p-3.5 text-xs text-taupe">
+                      <span className="font-bold text-charcoal">Portion options:</span> Full{" "}
+                      {inr(selected.price)} · Half {inr(selected.halfPrice)} (order half portions over the
+                      counter or on WhatsApp).
+                    </div>
+                  )}
+
+                  <div className="mt-6 flex items-center justify-between border-t border-charcoal/10 pt-5">
+                    <span className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-taupe">
+                      Quantity
+                    </span>
+                    <QtyStepper qty={qty} onChange={setQty} />
+                  </div>
+
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <button
+                      type="button"
+                      disabled={!selected.available}
+                      onClick={handleAdd}
+                      className="group inline-flex flex-1 items-center justify-center gap-2 bg-chilli px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-cream transition-all duration-300 hover:bg-chilli-deep disabled:cursor-not-allowed disabled:bg-charcoal/20"
+                    >
+                      {added ? (
+                        <>
+                          <Check className="h-4 w-4" aria-hidden /> Added!
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag className="h-4 w-4" aria-hidden />
+                          {!selected.available
+                            ? "Currently Unavailable"
+                            : cart[selected.id]
+                              ? `Update selection (${cart[selected.id]} in bag)`
+                              : "Add to selection"}
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openWhatsAppForDish(selected, qty)}
+                      className="inline-flex flex-1 items-center justify-center gap-2 border-2 border-wa px-5 py-3.5 text-[12px] font-bold uppercase tracking-[0.16em] text-wa transition-all duration-300 hover:-translate-y-0.5 hover:bg-wa hover:text-cream"
+                    >
+                      <MessageCircle className="h-4 w-4" aria-hidden />
+                      Add to WhatsApp
+                    </button>
+                  </div>
+
+                  <p className="mt-4 text-[11.5px] leading-relaxed text-taupe">
+                    "Add to WhatsApp" opens a pre-filled enquiry to the restaurant — availability and
+                    payment are confirmed by them directly.
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )
+    : null;
 }

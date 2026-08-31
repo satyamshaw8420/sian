@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, MessageCircle, ShoppingBag, Trash2, X } from "lucide-react";
 import { useOrder } from "../context/OrderContext";
@@ -33,11 +34,12 @@ export default function OrderDrawer() {
     );
   };
 
-  return (
-    <AnimatePresence>
-      {drawerOpen && (
-        <motion.div
-          className="fixed inset-0 z-[85] bg-charcoal/70 backdrop-blur-sm"
+  return typeof document !== "undefined"
+    ? createPortal(
+        <AnimatePresence>
+          {drawerOpen && (
+            <motion.div
+              className="fixed inset-0 z-[9999] bg-charcoal/70 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -176,6 +178,8 @@ export default function OrderDrawer() {
           </motion.aside>
         </motion.div>
       )}
-    </AnimatePresence>
-  );
+        </AnimatePresence>,
+        document.body
+      )
+    : null;
 }
