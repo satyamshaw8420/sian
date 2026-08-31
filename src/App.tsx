@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 import { OrderProvider } from "./context/OrderContext";
 import { DEFAULT_FILTERS, type MenuFilters } from "./data/menu";
 import { scrollToId } from "./lib/scroll";
@@ -68,6 +69,7 @@ export default function App() {
           </Routes>
         </HashRouter>
       </MotionConfig>
+      <Analytics />
     </OrderProvider>
   );
 }

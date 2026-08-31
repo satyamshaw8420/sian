@@ -60,9 +60,8 @@ export default function Hero() {
         <motion.div className="lg:col-span-7" variants={stagger} initial="hidden" animate="show">
           <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span
-              className={`inline-flex items-center gap-2 border px-3 py-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.2em] ${
-                open ? "border-[#1a7f37]/50 text-[#7ac790]" : "border-chilli/50 text-chilli"
-              }`}
+              className={`inline-flex items-center gap-2 border px-3 py-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.2em] ${open ? "border-[#1a7f37]/50 text-[#7ac790]" : "border-chilli/50 text-chilli"
+                }`}
             >
               <span className="relative flex h-2 w-2">
                 <span className={`ring-pulse absolute inline-flex h-full w-full rounded-full ${open ? "bg-[#7ac790]" : "bg-chilli"}`} />
