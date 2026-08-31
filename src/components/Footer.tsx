@@ -20,16 +20,18 @@ export default function Footer() {
   return (
     <footer className="noise relative overflow-hidden border-t border-gold/10 bg-charcoal text-cream">
       {/* Catchphrase strip — bridges the CTA and the footer */}
-      <div className="marquee-mask relative z-10 overflow-hidden border-b border-gold/10 bg-coal py-3.5" role="presentation">
-        <div className="animate-marquee flex w-max">
+      <div className="marquee-mask relative z-10 overflow-hidden border-y border-gold/20 bg-coal py-6" role="presentation">
+        <div className="animate-marquee flex w-max items-center">
           {[0, 1].map((half) => (
             <div key={half} className="flex shrink-0 items-center" aria-hidden={half === 1 || undefined}>
-              {Array.from({ length: 4 }).map((_, i) => (
+              {Array.from({ length: 3 }).map((_, i) => (
                 <span key={i} className="flex items-center">
-                  <span className="whitespace-nowrap px-5 font-display text-[15px] italic text-gold/85 sm:text-base">
-                    Good food doesn't wait — neither should you
+                  <span className="whitespace-nowrap px-6 font-display text-2xl font-bold leading-none sm:text-4xl">
+                    <span className="italic text-gold">Good food doesn't wait</span>
+                    <span className="mx-4 text-chilli">—</span>
+                    <span className="text-outline-cream">neither should you</span>
                   </span>
-                  <svg width="8" height="8" viewBox="0 0 10 10" className="text-chilli" aria-hidden>
+                  <svg width="11" height="11" viewBox="0 0 10 10" className="mx-7 shrink-0 text-chilli" aria-hidden>
                     <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="currentColor" />
                   </svg>
                 </span>
