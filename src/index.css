@@ -202,9 +202,6 @@ main {
 }
 
 /* film-grain overlay */
-:where(.noise) {
-  position: relative;
-}
 .noise::after {
   content: "";
   position: absolute;
