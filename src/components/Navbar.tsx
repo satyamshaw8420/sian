@@ -45,7 +45,7 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-[80] transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-[9998] transition-all duration-500 ${
           scrolled
             ? "border-b border-gold/10 bg-charcoal/85 py-2.5 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.7)] backdrop-blur-xl"
             : "bg-transparent py-4 sm:py-5"
