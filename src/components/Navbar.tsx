@@ -143,16 +143,27 @@ export default function Navbar() {
         createPortal(
           <AnimatePresence>
             {open && (
-              <motion.div
-                className="noise fixed inset-0 z-[9999] flex flex-col overflow-y-auto bg-wine-deep text-cream"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                role="dialog"
-                aria-modal="true"
-                aria-label="Navigation menu"
-              >
+              <>
+                {/* Backdrop overlay - click to close */}
+                <motion.div
+                  className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => setOpen(false)}
+                  aria-hidden
+                />
+                <motion.div
+                  className="noise fixed inset-0 z-[9999] flex flex-col overflow-y-auto bg-wine-deep text-cream"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Navigation menu"
+                >
                 <div className="relative z-10 flex items-center justify-between px-5 py-5">
                   <div className="flex items-center gap-3">
                     <img src={LOGO} alt="" className="h-11 w-11 rounded-full object-cover shadow-[0_0_0_1.5px_rgba(201,154,82,0.55)]" />
@@ -218,6 +229,7 @@ export default function Navbar() {
                   {SITE.hours.label} · {SITE.hours.display}
                 </p>
               </motion.div>
+              </>
             )}
           </AnimatePresence>,
           document.body
