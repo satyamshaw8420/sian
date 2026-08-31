@@ -38,8 +38,8 @@ export default function Reviews() {
             eyebrow="Google Reviews"
             lines={["What Our", <em key="g" className="text-chilli">Guests Say</em>]}
           />
-          <Reveal delay={0.15} className="mt-10 flex items-end gap-6">
-            <p className="font-display text-[7rem] font-black leading-[0.8] sm:text-[9rem]">{SITE.rating}</p>
+          <Reveal delay={0.15} className="mt-10 flex flex-wrap items-end gap-4 sm:flex-nowrap sm:gap-6">
+            <p className="font-display text-6xl font-black leading-[0.8] sm:text-[7.5rem] lg:text-[9rem]">{SITE.rating}</p>
             <div className="pb-3">
               <Stars value={SITE.rating} />
               <p className="mt-2.5 text-sm font-semibold text-taupe">

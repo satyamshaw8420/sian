@@ -9,7 +9,7 @@ import { fadeUp, stagger } from "./Reveal";
 export default function ContactCTA() {
   return (
     <section className="noise relative overflow-hidden bg-charcoal pt-24 pb-14 text-cream sm:pt-32 sm:pb-16" aria-label="Final call to action">
-      <div className="absolute inset-0" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <img
           src={IMAGES.hero}
           alt=""

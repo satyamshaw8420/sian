@@ -44,12 +44,12 @@ export default function Hero() {
       className="noise relative flex min-h-[100svh] items-center overflow-hidden bg-charcoal"
     >
       {/* ambient field */}
-      <div className="absolute inset-0" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <div className="absolute -left-40 top-1/4 h-[520px] w-[520px] rounded-full bg-chilli/[0.07] blur-[130px]" />
         <div className="absolute -right-32 -top-24 h-[560px] w-[560px] rounded-full bg-gold/[0.09] blur-[130px]" />
         <motion.span
           style={{ y: drift }}
-          className="pointer-events-none absolute -right-[4%] top-[2%] select-none font-display text-[38vw] font-black leading-none text-outline-cream lg:text-[26rem]"
+          className="pointer-events-none absolute right-0 top-[2%] select-none font-display text-[32vw] font-black leading-none text-outline-cream sm:text-[25vw] lg:text-[26rem]"
         >
           食
         </motion.span>

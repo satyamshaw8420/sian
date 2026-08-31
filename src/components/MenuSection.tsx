@@ -220,7 +220,7 @@ export default function MenuSection({
 
   return (
     <section id="menu" className="noise relative scroll-mt-16 overflow-hidden bg-wine-deep py-24 text-cream sm:py-28">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <div className="absolute -left-40 top-24 rounded-full bg-burgundy/60 blur-[130px]" style={{ width: 420, height: 420 }} />
         <div className="absolute -right-40 bottom-24 rounded-full bg-chilli/15 blur-[130px]" style={{ width: 420, height: 420 }} />
         <img src={LOGO} alt="" className="absolute -right-28 -top-28 h-[430px] w-[430px] rounded-full opacity-[0.05]" loading="lazy" />
