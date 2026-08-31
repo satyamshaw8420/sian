@@ -1,1 +1,233 @@
 @import "tailwindcss";
+
+@theme {
+  --color-charcoal: #171412;
+  --color-coal: #201c19;
+  --color-ink: #2b2521;
+  --color-wine: #3b0d0a;
+  --color-wine-deep: #280806;
+  --color-burgundy: #5a0005;
+  --color-cream: #f7f0e5;
+  --color-sand: #efe6d6;
+  --color-parchment: #fbf6ec;
+  --color-chilli: #b73528;
+  --color-chilli-deep: #8e251a;
+  --color-gold: #c99a52;
+  --color-gold-light: #e7cd9e;
+  --color-gold-bright: #f2c43d;
+  --color-taupe: #776f68;
+  --color-card: #fffdf9;
+  --color-wa: #1da851;
+
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Manrope", "Segoe UI", Tahoma, sans-serif;
+
+  --shadow-lift: 0 26px 50px -18px rgb(23 20 18 / 0.5);
+  --shadow-card: 0 10px 30px -14px rgb(23 20 18 / 0.18);
+  --shadow-gold: 0 18px 45px -15px rgb(201 154 82 / 0.35);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-charcoal);
+  color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-chilli);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #14110f;
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4139;
+  border-radius: 8px;
+  border: 2px solid #14110f;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 3D helpers */
+.perspective-1200 {
+  perspective: 1200px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* dotted price leaders */
+.dot-leader {
+  flex: 1 1 2rem;
+  min-width: 2rem;
+  border-bottom: 2px dotted rgb(201 154 82 / 0.35);
+  transform: translateY(-5px);
+}
+.dot-leader-dark {
+  flex: 1 1 1.25rem;
+  min-width: 1.25rem;
+  border-bottom: 2px dotted rgb(23 20 18 / 0.22);
+  transform: translateY(-4px);
+}
+
+/* hollow display type */
+.text-outline-cream {
+  -webkit-text-stroke: 1.5px rgb(247 240 229 / 0.14);
+  color: transparent;
+}
+.text-outline-gold {
+  -webkit-text-stroke: 1px rgb(201 154 82 / 0.4);
+  color: transparent;
+}
+
+/* ---------- signature motion ---------- */
+@keyframes kenburns {
+  from {
+    transform: scale(1.12) translateY(-1.5%);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
+}
+.kenburns {
+  animation: kenburns 12s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 36s linear infinite;
+}
+@keyframes marquee-rev {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-marquee-rev {
+  animation: marquee-rev 36s linear infinite;
+}
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+.scrollcue {
+  animation: scrollcue 2.4s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+
+@keyframes ring-pulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.ring-pulse {
+  animation: ring-pulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* film-grain overlay */
+.noise {
+  position: relative;
+}
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* gold hairline flourish divider */
+.flourish-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.flourish-divider::before,
+.flourish-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(to right, transparent, rgb(201 154 82 / 0.55));
+}
+.flourish-divider::after {
+  background: linear-gradient(to left, transparent, rgb(201 154 82 / 0.55));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .kenburns,
+  .animate-marquee,
+  .animate-marquee-rev,
+  .scrollcue,
+  .animate-spin-slow,
+  .ring-pulse {
+    animation: none !important;
+  }
+}
