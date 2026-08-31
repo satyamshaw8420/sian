@@ -15,7 +15,7 @@ export default function Gallery() {
   );
 
   return (
-    <section id="gallery" className="noise scroll-mt-20 bg-coal py-24 text-cream sm:py-32">
+    <section id="gallery" className="noise relative scroll-mt-20 bg-coal py-24 text-cream sm:py-32">
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
