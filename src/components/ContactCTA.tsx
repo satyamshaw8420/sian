@@ -32,33 +32,20 @@ export default function ContactCTA() {
           {SITE.hours.label} · {SITE.hours.display}
         </motion.p>
 
-        <h2 className="mt-8 font-display leading-[0.88]">
-          <span className="block overflow-hidden">
-            <motion.span
-              className="block text-7xl font-black text-outline-cream sm:text-9xl lg:text-[11rem]"
-              initial={{ y: "110%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Come
-            </motion.span>
+        <motion.h2 variants={fadeUp} className="mt-8 font-display leading-[1.05]">
+          <span className="block text-4xl font-extrabold uppercase tracking-tight text-cream sm:text-6xl lg:text-7xl">
+            Come Hungry.
           </span>
-          <span className="block overflow-hidden">
-            <motion.em
-              className="block pl-[0.6em] text-7xl font-bold italic text-gold sm:pl-[0.8em] sm:text-9xl lg:text-[11rem]"
-              initial={{ y: "110%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Hungry.
-            </motion.em>
+          <span className="mt-2 block font-serif text-3xl font-medium italic text-gold sm:text-5xl lg:text-6xl drop-shadow-[0_4px_24px_rgba(201,154,82,0.35)]">
+            Leave with a Happy Soul.
           </span>
-        </h2>
+        </motion.h2>
 
-        <motion.p variants={fadeUp} className="mx-auto mt-6 max-w-xl font-display text-lg italic leading-relaxed text-cream/75 sm:text-2xl">
-          One street. Four fires. <span className="text-gold">Zero chance you leave hungry.</span>
+        <motion.p variants={fadeUp} className="mx-auto mt-6 max-w-2xl font-display text-lg italic leading-relaxed text-cream/85 sm:text-2xl">
+          One street. Four fires. <span className="text-gold font-semibold">Zero chance you leave hungry.</span>
+        </motion.p>
+        <motion.p variants={fadeUp} className="mx-auto mt-2 max-w-lg text-xs uppercase tracking-[0.25em] text-cream/55 sm:text-sm">
+          Fresh woks · Dum biryani · Tandoor & Curries · Made for Kolkata
         </motion.p>
 
         <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center justify-center gap-3.5">
