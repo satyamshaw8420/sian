@@ -19,7 +19,27 @@ export default function Footer() {
 
   return (
     <footer className="noise relative overflow-hidden border-t border-gold/10 bg-charcoal text-cream">
-      <div className="relative z-10 mx-auto max-w-7xl px-5 pb-10 pt-16 sm:px-8">
+      {/* Catchphrase strip — bridges the CTA and the footer */}
+      <div className="marquee-mask relative z-10 overflow-hidden border-b border-gold/10 bg-coal py-3.5" role="presentation">
+        <div className="animate-marquee flex w-max">
+          {[0, 1].map((half) => (
+            <div key={half} className="flex shrink-0 items-center" aria-hidden={half === 1 || undefined}>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <span key={i} className="flex items-center">
+                  <span className="whitespace-nowrap px-5 font-display text-[15px] italic text-gold/85 sm:text-base">
+                    Good food doesn't wait — neither should you
+                  </span>
+                  <svg width="8" height="8" viewBox="0 0 10 10" className="text-chilli" aria-hidden>
+                    <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="currentColor" />
+                  </svg>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pb-10 pt-12 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand */}
           <div className="lg:col-span-4">
